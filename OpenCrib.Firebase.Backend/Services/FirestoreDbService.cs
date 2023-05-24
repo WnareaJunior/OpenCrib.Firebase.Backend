@@ -41,6 +41,68 @@ namespace OpenCrib.Firebase.Backend.Services
 
             return users;
         }
+
+        public async Task<User> GetUser(string userId)
+        {
+            DocumentSnapshot snapshot = await _userCollection.Document(userId).GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+                var user = snapshot.ConvertTo<User>();
+                //user.UserId = snapshot.UserId;
+                return user;
+            }
+            return null;
+        }
+
+        //To my knowledge, User creation is left to our google auth side, this web api will serve to modify already created users
+        public async Task<User> CreateUser(User user)
+        {
+            DocumentReference documentReference = await _userCollection.AddAsync(user);
+            user.UserId = documentReference.Id;
+            return user;
+        }
+
+        public async Task<User> UpdateUser(string id, User updatedUser)
+        {
+            DocumentReference documentReference = _userCollection.Document(id);
+            await documentReference.SetAsync(updatedUser, SetOptions.MergeAll);
+            updatedUser.UserId = id;
+            return updatedUser;
+        }
+
+        public async Task<bool> DeleteUser(string id)
+        {
+            DocumentReference documentReference = _userCollection.Document(id);
+            DocumentSnapshot snapshot = await documentReference.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+                await documentReference.DeleteAsync();
+                return true;
+            }
+            return false;
+        }
+       /* public async Task<bool> Unfollow(string yourId,string theirId)
+        {
+            DocumentReference 
+            if()
+
+        }
+        public async Task<bool> FollowUser(string followerUserId, string followeeUserId)
+        {
+            // Logic to check if followerUserId and followeeUserId are valid and exist in the database
+            // ...
+
+            // Perform the follow action
+            bool isFollowed = await _userRepository.FollowUser(followerUserId, followeeUserId);
+
+            return isFollowed;
+        }*/
+        public class UserNotFoundException : Exception
+        {
+            public UserNotFoundException(string message) : base(message)
+            {
+            }
+        }
     }
     
 }
