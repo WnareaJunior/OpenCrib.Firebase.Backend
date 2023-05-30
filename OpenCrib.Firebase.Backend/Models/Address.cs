@@ -5,6 +5,8 @@ using System.Net;
 
 namespace OpenCrib.Firebase.Backend.Models
 {
+
+    [FirestoreData]
     public class Address
     {
 

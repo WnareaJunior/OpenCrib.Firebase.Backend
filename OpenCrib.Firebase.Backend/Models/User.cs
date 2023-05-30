@@ -10,11 +10,11 @@ namespace OpenCrib.Firebase.Backend.Models
         [FirestoreDocumentId]
         public string? UserId { get; set; }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         public string Password { get; set; }
 
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
         public int HostRating { get; set; } = 0;
 
@@ -39,7 +39,7 @@ namespace OpenCrib.Firebase.Backend.Models
         public DateTime DOB { get; set; }
        
         public Address? Address { get; set; }
-
+        public UserSettings Settings { get; set; } = new UserSettings();
 
       
     }
