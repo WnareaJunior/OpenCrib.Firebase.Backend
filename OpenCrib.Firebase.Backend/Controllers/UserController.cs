@@ -42,14 +42,14 @@ namespace OpenCrib.Firebase.Backend.Controllers
             }
             return NotFound();
         }
-
-        /*[HttpPost("follow")]
+/*
+        [HttpPost("follow")]
         [Authorize] // Requires authentication (token)
         public async Task<IActionResult> FollowUser(string followeeUserId)
         {
             string followerUserId = User.Identity.Name; // Extract the user ID from the authenticated token
 
-            bool isFollowed = await _firestoreDbService.FollowUser(followerUserId, followeeUserId);
+           // bool isFollowed = await _firestoreDbService.FollowUser(followerUserId, followeeUserId);
 
             if (isFollowed)
             {
@@ -60,6 +60,35 @@ namespace OpenCrib.Firebase.Backend.Controllers
                 return BadRequest("Unable to follow user.");
             }
         }*/
+
+    }
+
+    [ApiController]
+    [Route("[controller]")]
+    public class PartyController : ControllerBase
+    {
+        private readonly FirestoreDbService _firestoreDbService;
+        private readonly string ProjectId = "opencrib-74dcd";
+        public PartyController()
+        {
+            _firestoreDbService = new FirestoreDbService(ProjectId);
+        }
+
+        //
+        // Posts a party
+        //
+
+        [HttpPost("PostParty")]
+        public async Task<IActionResult> PostParty(Party party)
+        {
+            Party created = await _firestoreDbService.PostParty(party);
+
+            if (created != null)
+            {
+                return Ok(party);
+            }
+            return BadRequest();
+        }
 
     }
 }

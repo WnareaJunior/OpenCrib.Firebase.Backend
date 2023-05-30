@@ -10,12 +10,14 @@ namespace OpenCrib.Firebase.Backend.Services
     public class FirestoreDbService
     {
         private readonly CollectionReference _userCollection;
+        private readonly CollectionReference _partyCollection;
         private FirestoreDb _db;
         public FirestoreDbService(string projectId)
         {
             // Initialize Firestore client
             _db = FirestoreDb.Create(projectId);
             _userCollection = _db.Collection("users");
+            _partyCollection = _db.Collection("parties");
             //FirestoreDb.ConverterRegistry.AddConverter(new UserConverter());
         }
 
@@ -97,6 +99,33 @@ namespace OpenCrib.Firebase.Backend.Services
 
             return isFollowed;
         }*/
+
+        public async Task<Party> PostParty(Party party)
+        {
+            // Add to the parties collection with the new party object
+            DocumentReference partyDocument = await _partyCollection.AddAsync(party);
+
+            // Get the party's host userDocument using the hostId which is equal the the UserId Field in User Model
+            DocumentReference userDocument = _userCollection.Document(party.HostId);
+
+            // Update the user's parties list with the new party reference
+            await userDocument.UpdateAsync("PartiesThrown", FieldValue.ArrayUnion(partyDocument));
+
+            // check if correct user has the the party Id added to their list of parties hosted/hosting 
+            DocumentSnapshot userSnapshot = await _userCollection.Document(party.HostId).GetSnapshotAsync();
+           /* if (userSnapshot.Exists) {
+                User user = userSnapshot.ConvertTo<User>();
+                if (user != null &&
+                    user.PartiesThrown != null &&
+                    user.PartiesThrown.Contains(partyDocument.Id))
+                {
+                    return party;
+                }
+            }*/
+
+            return party;
+
+        }
         public class UserNotFoundException : Exception
         {
             public UserNotFoundException(string message) : base(message)
