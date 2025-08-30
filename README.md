@@ -1,9 +1,9 @@
 # OpenCrib.Firebase.Backend
 Open Crib Backend using Firebase
-#🧩 Project Context
+# 🧩 Project Context
 This FireBase backend is still under construction!
 
-User-related requests:
+# User-related requests:
 
       GET /users: Get a list of all users.
 
@@ -16,7 +16,7 @@ User-related requests:
       DELETE /users/{id}: Delete a user by ID.
 
 
-Post-related requests:
+# Post-related requests:
 
       GET /posts: Get a list of all posts.
 
@@ -29,7 +29,7 @@ Post-related requests:
       DELETE /posts/{id}: Delete a post by ID.
 
 
-Comment-related requests:
+# Comment-related requests:
 
       GET /posts/{postId}/comments: Get comments for a specific post.
 
@@ -42,20 +42,20 @@ Comment-related requests:
       DELETE /comments/{id}: Delete a comment by ID.
 
 
-Like-related requests:
+# Like-related requests:
 
       POST /posts/{postId}/likes: Like a post.
 
       DELETE /posts/{postId}/likes: Remove a like from a post.
 
 
-Follow-related requests:
+# Follow-related requests:
 
       POST /users/{userId}/follow: Follow a user.
 
       DELETE /users/{userId}/follow: Unfollow a user.
 
-Search-related requests:
+# Search-related requests:
 
   GET /users/search: Search for users by name or username.
   GET /posts/search: Search for posts by keyword or hashtag.
