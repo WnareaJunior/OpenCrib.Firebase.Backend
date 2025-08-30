@@ -1,5 +1,7 @@
 # OpenCrib.Firebase.Backend
 Open Crib Backend using Firebase
+#🧩 Project Context
+This FireBase backend is still under construction!
 
 User-related requests:
 
